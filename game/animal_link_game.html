@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>小动物连连看小游戏</title>
+    <style>
+        body {
+            background: #f0f8ff;
+            font-family: "Segoe UI", Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #4caf50;
+            margin-top: 20px;
+        }
+        .info-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 20px 0;
+        }
+        .info-box {
+            background: #e0f7fa;
+            border-radius: 10px;
+            padding: 10px 30px;
+            font-size: 22px;
+            min-width: 80px;
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(8, 50px);
+            grid-template-rows: repeat(6, 50px);
+            gap: 8px;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            background: #b2dfdb;
+            border-radius: 12px;
+            padding: 16px;
+            width: max-content;
+        }
+        .cell {
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            transition: background 0.2s;
+            user-select: none;
+            border: 2px solid #b2dfdb;
+        }
+        .cell.selected {
+            background: #4caf50;
+            color: #fff;
+            border: 2px solid #388e3c;
+        }
+        .controls {
+            margin: 20px 0;
+        }
+        .btn {
+            background: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 18px;
+            font-size: 18px;
+            margin: 0 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn:active {
+            background: #388e3c;
+        }
+    </style>
+</head>
+<body>
+    <h1>小动物连连看</h1>
+    <div class="info-bar">
+        <div class="info-box"><span id="score">0</span><br>得分</div>
+        <div class="info-box"><span id="timer">3:00</span><br>时间</div>
+        <div class="info-box"><span id="left">48</span><br>剩余</div>
+        <div class="info-box"><span id="shuffle">3</span><br>洗牌</div>
+    </div>
+    <div class="game-board" id="board"></div>
+    <div class="controls">
+        <button class="btn" id="hintBtn">提示 (3)</button>
+        <button class="btn" id="shuffleBtn">洗牌 (3)</button>
+        <button class="btn" id="restartBtn">重开</button>
+    </div>
+    <script>
+        // 可用的小动物emoji
+        const animals = ['🐱','🐶','🐰','🦊','🐻','🐼','🐵','🦁','🐯','🐮','🐷','🐸','🐔','🦄','🐧','🐤'];
+        const ROWS = 6, COLS = 8;
+        const PAIRS = (ROWS * COLS) / 2;
+        let board = [];
+        let selected = [];
+        let score = 0;
+        let left = ROWS * COLS;
+        let timer = 180; // 秒
+        let timerInterval = null;
+        let shuffleCount = 3;
+        let hintCount = 3;
+
+        function shuffleArray(arr) {
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+        }
+
+        function generateBoard() {
+            let pairs = [];
+            for (let i = 0; i < PAIRS; i++) {
+                let icon = animals[i % animals.length];
+                pairs.push(icon, icon);
+            }
+            shuffleArray(pairs);
+            board = [];
+            for (let r = 0; r < ROWS; r++) {
+                board[r] = [];
+                for (let c = 0; c < COLS; c++) {
+                    board[r][c] = pairs[r * COLS + c];
+                }
+            }
+        }
+
+        function renderBoard() {
+            const boardDiv = document.getElementById('board');
+            boardDiv.innerHTML = '';
+            for (let r = 0; r < ROWS; r++) {
+                for (let c = 0; c < COLS; c++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.row = r;
+                    cell.dataset.col = c;
+                    if (board[r][c]) cell.textContent = board[r][c];
+                    else cell.textContent = '';
+                    if (selected.some(sel => sel[0] === r && sel[1] === c)) {
+                        cell.classList.add('selected');
+                    }
+                    cell.onclick = () => onCellClick(r, c);
+                    boardDiv.appendChild(cell);
+                }
+            }
+            document.getElementById('score').textContent = score;
+            document.getElementById('left').textContent = left;
+            document.getElementById('shuffle').textContent = shuffleCount;
+        }
+
+        function onCellClick(r, c) {
+            if (!board[r][c]) return;
+            if (selected.length === 1 && selected[0][0] === r && selected[0][1] === c) return;
+            if (selected.length < 2) {
+                selected.push([r, c]);
+                renderBoard();
+            }
+            if (selected.length === 2) {
+                setTimeout(() => {
+                    checkMatch();
+                }, 200);
+            }
+        }
+
+        function checkMatch() {
+            const [[r1, c1], [r2, c2]] = selected;
+            if (r1 === r2 && c1 === c2) {
+                selected = [];
+                renderBoard();
+                return;
+            }
+            if (board[r1][c1] === board[r2][c2] && canConnect(r1, c1, r2, c2)) {
+                board[r1][c1] = null;
+                board[r2][c2] = null;
+                score += 10;
+                left -= 2;
+                if (left === 0) {
+                    clearInterval(timerInterval);
+                    setTimeout(() => alert('恭喜通关！'), 100);
+                }
+            }
+            selected = [];
+            renderBoard();
+        }
+
+        // 简单连线判定（仅支持直线或一次转弯）
+        function canConnect(r1, c1, r2, c2) {
+            if (r1 === r2) {
+                let min = Math.min(c1, c2), max = Math.max(c1, c2);
+                for (let c = min + 1; c < max; c++) if (board[r1][c]) return false;
+                return true;
+            }
+            if (c1 === c2) {
+                let min = Math.min(r1, r2), max = Math.max(r1, r2);
+                for (let r = min + 1; r < max; r++) if (board[r][c1]) return false;
+                return true;
+            }
+            // 一次转弯
+            if (!board[r1][c2] && canConnect(r1, c1, r1, c2) && canConnect(r1, c2, r2, c2)) return true;
+            if (!board[r2][c1] && canConnect(r1, c1, r2, c1) && canConnect(r2, c1, r2, c2)) return true;
+            return false;
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timer--;
+                let min = Math.floor(timer / 60);
+                let sec = timer % 60;
+                document.getElementById('timer').textContent = `${min}:${sec.toString().padStart(2, '0')}`;
+                if (timer <= 0) {
+                    clearInterval(timerInterval);
+                    alert('时间到，游戏结束！');
+                }
+            }, 1000);
+        }
+
+        function shuffleBoard() {
+            if (shuffleCount <= 0) return;
+            let iconsLeft = [];
+            for (let r = 0; r < ROWS; r++)
+                for (let c = 0; c < COLS; c++)
+                    if (board[r][c]) iconsLeft.push(board[r][c]);
+            shuffleArray(iconsLeft);
+            for (let r = 0; r < ROWS; r++)
+                for (let c = 0; c < COLS; c++)
+                    if (board[r][c]) board[r][c] = iconsLeft.pop();
+            shuffleCount--;
+            renderBoard();
+        }
+
+        function findHint() {
+            for (let r1 = 0; r1 < ROWS; r1++) {
+                for (let c1 = 0; c1 < COLS; c1++) {
+                    if (!board[r1][c1]) continue;
+                    for (let r2 = 0; r2 < ROWS; r2++) {
+                        for (let c2 = 0; c2 < COLS; c2++) {
+                            if ((r1 !== r2 || c1 !== c2) && board[r1][c1] === board[r2][c2] && canConnect(r1, c1, r2, c2)) {
+                                selected = [[r1, c1], [r2, c2]];
+                                renderBoard();
+                                setTimeout(() => { selected = []; renderBoard(); }, 800);
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        document.getElementById('shuffleBtn').onclick = () => {
+            shuffleBoard();
+        };
+        document.getElementById('hintBtn').onclick = () => {
+            if (hintCount > 0) {
+                if (findHint()) hintCount--;
+            }
+        };
+        document.getElementById('restartBtn').onclick = () => {
+            clearInterval(timerInterval);
+            initGame();
+        };
+
+        function initGame() {
+            score = 0;
+            left = ROWS * COLS;
+            timer = 180;
+            shuffleCount = 3;
+            hintCount = 3;
+            selected = [];
+            generateBoard();
+            renderBoard();
+            document.getElementById('timer').textContent = '3:00';
+            clearInterval(timerInterval);
+            startTimer();
+        }
+
+        window.onload = initGame;
+    </script>
+</body>
+</html>
