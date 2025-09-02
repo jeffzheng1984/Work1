@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatGPT Prompt学习指南：从入门到精通</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', Arial, sans-serif;
+            background: #f7f9fb;
+            color: #222;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 950px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 40px 32px 32px 32px;
+        }
+        h1, h2, h3 {
+            color: #2a7ae2;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        h2 {
+            margin-top: 36px;
+            border-left: 4px solid #2a7ae2;
+            padding-left: 10px;
+        }
+        h3 {
+            margin-top: 24px;
+        }
+        ul, ol {
+            margin-left: 24px;
+        }
+        pre, code {
+            background: #f3f6fa;
+            color: #1a1a1a;
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 15px;
+            overflow-x: auto;
+        }
+        .tip {
+            background: #eaf6ff;
+            border-left: 4px solid #2a7ae2;
+            padding: 12px 18px;
+            margin: 18px 0;
+            border-radius: 6px;
+            color: #205081;
+        }
+        .footer {
+            text-align: center;
+            color: #888;
+            margin-top: 40px;
+            font-size: 15px;
+        }
+        .example {
+            background: #f9fbe7;
+            border-left: 4px solid #cddc39;
+            padding: 10px 16px;
+            margin: 14px 0;
+            border-radius: 6px;
+            color: #666;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 16px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>ChatGPT Prompt学习指南</h1>
+    <h3 style="text-align:center; color:#666;">从入门到精通，充分利用AI的计算能力</h3>
+    <div class="tip">
+        本指南适合所有希望高效使用ChatGPT的用户，内容涵盖基础、进阶与实战技巧，并配有丰富例子。
+    </div>
+
+    <h2>1. 什么是Prompt？</h2>
+    <p>Prompt（提示词）是与ChatGPT等AI模型交互时输入的指令或问题。优质的Prompt能让AI更准确地理解你的需求，输出更符合预期的答案。</p>
+    <div class="example">
+        <b>例子：</b>“请用200字介绍人工智能的发展历程。”<br>
+        <b>例子：</b>“你现在是一名银行系统测试专家，请总结常见的测试点。”
+    </div>
+
+    <h2>2. Prompt基础知识</h2>
+    <ul>
+        <li><b>简明清晰：</b>用简洁明了的语言描述你的需求，避免歧义。</li>
+        <li><b>具体详细：</b>提供足够的背景信息和细节，让AI更好理解上下文。</li>
+        <li><b>目标导向：</b>明确你希望AI完成什么任务，如写作、总结、翻译、计算等。</li>
+        <li><b>格式要求：</b>可指定输出格式（如表格、列表、代码块等）。</li>
+    </ul>
+    <div class="example">
+        <b>例子：</b>“请以表格形式列出银行系统常见的安全测试点及其说明。”<br>
+        <b>例子：</b>“请用100字总结下列文本的主要内容。”
+    </div>
+
+    <h2>3. 提问技巧与范例</h2>
+    <h3>3.1 基础提问</h3>
+    <pre>什么是自动化测试？</pre>
+    <div class="example">
+        <b>说明：</b>直接提问，适合获取定义、原理等基础知识。
+    </div>
+    <h3>3.2 指定格式</h3>
+    <pre>请以表格形式列出银行系统的主要功能模块及其描述。</pre>
+    <div class="example">
+        <b>说明：</b>指定输出格式，便于后续整理和使用。
+    </div>
+    <h3>3.3 角色扮演</h3>
+    <pre>你是一名资深银行测试工程师，请总结核心业务流程的测试要点。</pre>
+    <div class="example">
+        <b>说明：</b>设定AI角色，获得更专业、贴合场景的回答。
+    </div>
+    <h3>3.4 多轮对话</h3>
+    <pre>我会分多步描述需求，请在每一步后等待我的进一步指示。</pre>
+    <div class="example">
+        <b>说明：</b>适合复杂任务的分步沟通。
+    </div>
+    <h3>3.5 复杂任务</h3>
+    <pre>请帮我写一个Python脚本，实现银行流水数据的批量导入和校验。</pre>
+    <div class="example">
+        <b>说明：</b>适合需要AI协助完成多步骤或有一定技术门槛的任务。
+    </div>
+
+    <h2>4. 进阶用法</h2>
+    <h3>4.1 多轮对话与上下文管理</h3>
+    <ul>
+        <li>逐步细化需求，利用上下文让AI理解更复杂的任务。</li>
+        <li>可在每轮对话中补充细节或调整目标。</li>
+    </ul>
+    <div class="example">
+        <b>例子：</b>
+        <pre>第一步：请帮我分析以下银行交易日志的异常记录。
+第二步：请根据分析结果，给出改进建议。</pre>
+    </div>
+    <h3>4.2 角色设定与风格控制</h3>
+    <ul>
+        <li>通过设定AI的角色、语气、风格，获得更贴合场景的回答。</li>
+        <li>可指定输出风格，如学术、通俗、报告等。</li>
+    </ul>
+    <div class="example">
+        <b>例子：</b>
+        <pre>你是一名银行安全专家，请用报告风格总结系统安全测试的关键点。</pre>
+    </div>
+    <h3>4.3 数据处理与计算能力</h3>
+    <ul>
+        <li>ChatGPT可辅助进行数据分析、表格处理、代码生成等计算任务。</li>
+        <li>可让AI进行数据统计、格式转换、批量处理等。</li>
+    </ul>
+    <div class="example">
+        <b>例子：</b>
+        <pre>请统计以下银行账户余额的平均值、最大值和最小值：1200, 3400, 560, 8900, 2300。</pre>
+    </div>
+    <h3>4.4 自动化与批量任务</h3>
+    <ul>
+        <li>利用Prompt让ChatGPT批量生成内容、自动化处理文本等。</li>
+        <li>适合生成测试用例、批量总结、自动化脚本等。</li>
+    </ul>
+    <div class="example">
+        <b>例子：</b>
+        <pre>请为以下5个银行业务场景生成测试用例标题：开户、转账、贷款申请、还款、账户挂失。</pre>
+    </div>
+
+    <h2>5. 利用ChatGPT的计算能力</h2>
+    <ul>
+        <li>数学计算：<pre>请计算 12345 × 6789 的结果。</pre></li>
+        <li>代码编写与调试：<pre>请写一个Python函数，校验银行账户号码的合法性。</pre></li>
+        <li>数据格式转换：<pre>请将以下银行客户信息的JSON数据转换为CSV格式。</pre></li>
+        <li>文本摘要与翻译：<pre>请将以下英文银行业务流程翻译成中文并生成摘要。</pre></li>
+    </ul>
+    <div class="tip">
+        善用ChatGPT的推理、归纳、总结、计算等能力，可大幅提升工作与学习效率。
+    </div>
+
+    <h2>6. 常见问题与优化建议</h2>
+    <ul>
+        <li><b>输出不理想？</b> 尝试更换表达方式，增加细节或示例。</li>
+        <li><b>内容不准确？</b> 明确要求AI引用权威资料或给出出处。</li>
+        <li><b>结果太泛泛？</b> 指定输出格式、字数、风格等。</li>
+        <li><b>多轮对话混乱？</b> 简要回顾上下文，帮助AI理清思路。</li>
+        <li><b>需要批量处理？</b> 明确说明批量需求，并举例说明。</li>
+    </ul>
+    <div class="example">
+        <b>例子：</b>“请为以下10个银行业务场景各生成3条测试用例。”
+    </div>
+
+    <h2>7. 重点案例：银行系统测试点总结Prompt</h2>
+    <h3>背景说明</h3>
+    <p>银行系统业务复杂，测试点众多。通过设计高效Prompt，可以快速梳理和总结测试要点，提升测试效率和覆盖率。</p>
+    <h3>目标</h3>
+    <ul>
+        <li>让AI系统性总结银行系统的主要测试点</li>
+        <li>输出结构化、可复用的内容（如表格、分点列表等）</li>
+    </ul>
+    <h3>示例Prompt</h3>
+    <pre>你是一名资深银行系统测试专家，请以表格形式总结银行系统的主要测试点，包括：测试点名称、测试内容说明、适用业务模块、重要性等级。</pre>
+    <h3>优化建议</h3>
+    <ul>
+        <li>可根据实际业务模块（如账户、转账、贷款、还款等）细化Prompt</li>
+        <li>指定输出格式，便于后续整理和复用</li>
+        <li>可要求AI补充遗漏的测试点或根据实际案例补充说明</li>
+    </ul>
+    <h3>输出示例</h3>
+    <table border="1" cellpadding="6" style="border-collapse:collapse; margin:10px 0;">
+        <tr style="background:#e3f2fd;"><th>测试点名称</th><th>测试内容说明</th><th>适用业务模块</th><th>重要性等级</th></tr>
+        <tr><td>账户开户</td><td>验证开户流程的正确性和合规性</td><td>账户管理</td><td>高</td></tr>
+        <tr><td>转账限额</td><td>校验转账金额不超过设定限额</td><td>转账</td><td>高</td></tr>
+        <tr><td>密码加密</td><td>确保用户密码加密存储与传输</td><td>安全</td><td>高</td></tr>
+        <tr><td>异常处理</td><td>测试系统对异常输入和操作的处理能力</td><td>全模块</td><td>中</td></tr>
+        <tr><td>数据一致性</td><td>验证多模块间数据同步与一致性</td><td>全模块</td><td>高</td></tr>
+    </table>
+    <div class="example">
+        <b>进阶Prompt：</b><br>
+        “请补充上述表格中未涵盖的银行系统安全测试点，并说明其重要性。”
+    </div>
+
+    <h2>8. 资源推荐</h2>
+    <ul>
+        <li><a href="https://platform.openai.com/docs/guides/gpt" target="_blank">OpenAI官方文档</a></li>
+        <li><a href="https://github.com/f/awesome-chatgpt-prompts" target="_blank">Awesome ChatGPT Prompts</a></li>
+        <li><a href="https://promptingguide.ai/zh" target="_blank">Prompt Engineering Guide</a></li>
+    </ul>
+
+    <div class="footer">
+        © 2024 ChatGPT Prompt学习指南 | 由AI生成，欢迎分享与学习
+    </div>
+</div>
+</body>
+</html>
